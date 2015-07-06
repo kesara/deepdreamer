@@ -1,0 +1,4 @@
+#caffe
+numpy
+Pillow
+scipy
