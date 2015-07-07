@@ -90,6 +90,13 @@ def _deepdream(
     return _deprocess(net, src.data[0])
 
 
+def list_layers():
+    # Load DNN model
+    net = Classifier(
+        NET_FN, PARAM_FN, mean=CAFFE_MEAN, channel_swap=CHANNEL_SWAP)
+    net.blobs.keys()
+
+
 def deepdream(
         img_path, zoom=True, scale_coefficient=0.05, irange=100, iter_n=10,
         octave_n=4, octave_scale=1.4, end="inception_4c/output", clip=True):
