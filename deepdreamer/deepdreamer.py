@@ -90,12 +90,6 @@ def _deepdream(
     return _deprocess(net, src.data[0])
 
 
-def _show_progress(progress):
-    print("\r[{bar}] {progress}%".format(
-        bar="#"*(progress/10),
-        progress=progress))
-
-
 def deepdream(
         img_path, scale_coefficient=0.05, irange=100, iter_n=10, octave_n=4,
         octave_scale=1.4, end="inception_4c/output", clip=True):
@@ -104,14 +98,16 @@ def deepdream(
     h, w = img.shape[:2]
 
     # Load DNN model
-    net = Classifier(NET_FN, PARAM_FN, CAFFE_MEAN, CHANNEL_SWAP)
+    net = Classifier(
+        NET_FN, PARAM_FN, mean=CAFFE_MEAN, channel_swap=CHANNEL_SWAP)
 
+    print("Dreaming...")
     for i in xrange(irange):
         img = _deepdream(
             net, img, iter_n=iter_n, octave_n=octave_n,
             octave_scale=octave_scale, end=end, clip=clip)
-        PIL.Image.fromarray(np.uint8(frame)).save("{}_{}.jpg".format(
+        img_fromarray(np.uint8(img)).save("{}_{}.jpg".format(
             img_path, i))
-        _show_progress(i/irange*100)
+        print("Dream {} saved.".format(i))
         img = affine_transform(
             img, [1-s, 1-s, 1], [h*s/2, w*s/2, 0], order=1)
