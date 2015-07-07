@@ -91,8 +91,8 @@ def _deepdream(
 
 
 def deepdream(
-        img_path, scale_coefficient=0.05, irange=100, iter_n=10, octave_n=4,
-        octave_scale=1.4, end="inception_4c/output", clip=True):
+        img_path, zoom=True, scale_coefficient=0.05, irange=100, iter_n=10,
+        octave_n=4, octave_scale=1.4, end="inception_4c/output", clip=True):
     img = np.float32(img_open(img_path))
     s = scale_coefficient
     h, w = img.shape[:2]
@@ -109,5 +109,6 @@ def deepdream(
         img_fromarray(np.uint8(img)).save("{}_{}.jpg".format(
             img_path, i))
         print("Dream {} saved.".format(i))
-        img = affine_transform(
-            img, [1-s, 1-s, 1], [h*s/2, w*s/2, 0], order=1)
+        if zoom:
+            img = affine_transform(
+                img, [1-s, 1-s, 1], [h*s/2, w*s/2, 0], order=1)
