@@ -5,7 +5,7 @@ Python program that make use of [Google's DeepDream](https://github.com/google/d
 * Python 2.7
 * [NumPy](https://pypi.python.org/pypi/numpy)
 * [SciPy](https://pypi.python.org/pypi/scipy/)
-* [Pillow](https://pypi.python.org/pypi/Pillow/0)
+* [Pillow](https://pypi.python.org/pypi/Pillow/)
 * [Caffe](http://caffe.berkeleyvision.org/)
 
 ## Installation
