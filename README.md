@@ -1,5 +1,5 @@
 # Deep Dreamer
-Python program that make use of [Google's DeepDream](https://github.com/google/deepdream/)
+Easy to configure Python program that make use of [Google's DeepDream](https://github.com/google/deepdream/)
 
 ## Requirements
 * Python 2.7
