@@ -39,7 +39,7 @@ def main():
         parser.add_argument(
             "--network", choices=['bvlc_googlenet', 'googlenet_place205'],
             default='bvlc_googlenet',
-            help="choose the network to use (default: googlenet_place205)")
+            help="choose the network to use (default: bvlc_googlenet)")
         group = parser.add_mutually_exclusive_group(required=True)
         group.add_argument("image", nargs="?")
         group.add_argument(
