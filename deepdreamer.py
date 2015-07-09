@@ -23,7 +23,7 @@ def main():
             help="number of images (default: 100)")
         parser.add_argument(
             "--itern", type=int, default=10,
-            help="dream iterations (default: 10")
+            help="dream iterations (default: 10)")
         parser.add_argument(
             "--octaves", type=int, default=4,
             help="dream octaves (default: 4)")
@@ -38,7 +38,8 @@ def main():
             help="clip dreams (default: true)")
         group = parser.add_mutually_exclusive_group(required=True)
         group.add_argument("image", nargs="?")
-        group.add_argument("--list-layers", action="store_true", help="list layers")
+        group.add_argument(
+            "--list-layers", action="store_true", help="list layers")
         args = parser.parse_args()
         if args.list_layers:
             list_layers()

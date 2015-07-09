@@ -34,7 +34,7 @@ optional arguments:
   --zoom {true,false}   zoom dreams (default: true)
   --scale SCALE         scale coefficient for zoom (default: 0.05)
   --dreams DREAMS       number of images (default: 100)
-  --itern ITERN         dream iterations (default: 10
+  --itern ITERN         dream iterations (default: 10)
   --octaves OCTAVES     dream octaves (default: 4)
   --octave-scale OCTAVE_SCALE
                         dream octave scale (default: 1.4)
@@ -42,4 +42,3 @@ optional arguments:
   --clip {true,false}   clip dreams (default: true)
   --list-layers         list layers
 ```
-
