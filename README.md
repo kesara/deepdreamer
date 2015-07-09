@@ -13,7 +13,8 @@ Easy to configure Python program that make use of [Google's DeepDream](https://g
 2. Download **deploy.prototxt** from [bvlc_googlenet](https://github.com/BVLC/caffe/tree/master/models/bvlc_googlenet).
 3. Add line `force_backward: true` to **deploy.prototxt** file.
 4. Download **bvlc_googlenet.caffemodel** from [bvlc_googlenet](https://github.com/BVLC/caffe/tree/master/models/bvlc_googlenet).
-5. Make sure those two files are on root directory of DeepDreamer.
+5. (Optional) If instead you want to incept using MIT's "Places" neural net, download the **Places205-GoogLeNet** from [their website](http://places.csail.mit.edu/downloadCNN.html). You need the **deploy_places205.protxt** and **googlelet_places205_train_iter_2400000.caffemodel** files from the archive.
+6. Make sure the files are in the root directory of DeepDreamer.
 
 ## Usage
 `python deepdreamer.py image.jpg`
