@@ -36,6 +36,10 @@ def main():
         parser.add_argument(
             "--clip", choices=["true", "false"], default="true",
             help="clip dreams (default: true)")
+        parser.add_argument(
+            "--network", choices=['bvlc_googlenet', 'googlenet_place205'],
+            default='bvlc_googlenet',
+            help="choose the network to use (default: Googlenet BVLC)")
         group = parser.add_mutually_exclusive_group(required=True)
         group.add_argument("image", nargs="?")
         group.add_argument(
@@ -53,7 +57,8 @@ def main():
             deepdream(
                 args.image, zoom=zoom, scale_coefficient=args.scale,
                 irange=args.dreams, iter_n=args.itern, octave_n=args.octaves,
-                octave_scale=args.octave_scale, end=args.layers, clip=clip)
+                octave_scale=args.octave_scale, end=args.layers, clip=clip,
+                network=args.network)
     except Exception as e:
         print("Error: {}".format(e))
         sys.exit(2)
