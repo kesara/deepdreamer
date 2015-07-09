@@ -5,15 +5,30 @@
 ###############################################################################
 
 import numpy as np
+import sys; sys.path.append("/home/richard/python/")
 from caffe import Classifier
 from scipy.ndimage import affine_transform, zoom
 from PIL.Image import fromarray as img_fromarray, open as img_open
 
-NET_FN = "deploy.prototxt"  # Make sure force_backward: true
-PARAM_FN = "bvlc_googlenet.caffemodel"
-CHANNEL_SWAP = (2, 1, 0)
-# ImageNet mean, training set dependent
-CAFFE_MEAN = np.float32([104.0, 116.0, 122.0])
+
+def _select_network(netname):
+    if netname == 'bvlc_googlenet':
+        NET_FN = "deploy.prototxt"  # Make sure force_backward: true
+        PARAM_FN = "bvlc_googlenet.caffemodel"
+        CHANNEL_SWAP = (2, 1, 0)
+        # ImageNet mean, training set dependent
+        CAFFE_MEAN = np.float32([104.0, 116.0, 122.0])
+        return NET_FN, PARAM_FN, CHANNEL_SWAP, CAFFE_MEAN
+    elif netname == 'googlenet_place205':
+        # TODO: check if SWAP and MEAN also work for places205
+        NET_FN = "deploy_places205.prototxt"  # Make sure force_backward: true
+        PARAM_FN = "googlelet_places205_train_iter_2400000.caffemodel"
+        CHANNEL_SWAP = (2, 1, 0) 
+        # ImageNet mean, training set dependent
+        CAFFE_MEAN = np.float32([104.0, 116.0, 122.0])
+        return NET_FN, PARAM_FN, CHANNEL_SWAP, CAFFE_MEAN
+    else:
+        print("Error: network {} not implemented".format(netname))
 
 
 def _preprocess(net, img):
@@ -99,12 +114,14 @@ def list_layers():
 
 def deepdream(
         img_path, zoom=True, scale_coefficient=0.05, irange=100, iter_n=10,
-        octave_n=4, octave_scale=1.4, end="inception_4c/output", clip=True):
+        octave_n=4, octave_scale=1.4, end="inception_4c/output", clip=True,
+        network="bvlc_googlenet"):
     img = np.float32(img_open(img_path))
     s = scale_coefficient
     h, w = img.shape[:2]
-
-    # Load DNN model
+    
+    # Select, load DNN model
+    NET_FN, PARAM_FN, CHANNEL_SWAP, CAFFE_MEAN = _select_network(network)
     net = Classifier(
         NET_FN, PARAM_FN, mean=CAFFE_MEAN, channel_swap=CHANNEL_SWAP)
 
