@@ -5,7 +5,6 @@
 ###############################################################################
 
 import numpy as np
-import sys; sys.path.append("/home/richard/python/")
 from caffe import Classifier
 from scipy.ndimage import affine_transform, zoom
 from PIL.Image import fromarray as img_fromarray, open as img_open
@@ -20,8 +19,8 @@ def _select_network(netname):
         CAFFE_MEAN = np.float32([104.0, 116.0, 122.0])
         return NET_FN, PARAM_FN, CHANNEL_SWAP, CAFFE_MEAN
     elif netname == 'googlenet_place205':
-        # TODO: check if SWAP and MEAN also work for places205
-        NET_FN = "deploy_places205.prototxt"  # Make sure force_backward: true
+        # TODO: refit SWAP and MEAN for places205? These work for now.
+        NET_FN = "deploy_places205.protxt"  # Make sure force_backward: true
         PARAM_FN = "googlelet_places205_train_iter_2400000.caffemodel"
         CHANNEL_SWAP = (2, 1, 0) 
         # ImageNet mean, training set dependent

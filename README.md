@@ -24,6 +24,7 @@ usage: deepdreamer.py [-h] [--zoom {true,false}] [--scale SCALE]
                       [--dreams DREAMS] [--itern ITERN] [--octaves OCTAVES]
                       [--octave-scale OCTAVE_SCALE] [--layers LAYERS]
                       [--clip {true,false}] [--list-layers]
+                      [--network {bvlc_googlenet, googlenet_place205}]
                       [image]
 
 positional arguments:
@@ -41,4 +42,5 @@ optional arguments:
   --layers LAYERS       dream layers (default: inception_4c/output)
   --clip {true,false}   clip dreams (default: true)
   --list-layers         list layers
+  --network             choose the network to use (default: googlenet_place205)
 ```
