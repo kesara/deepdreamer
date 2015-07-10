@@ -22,7 +22,7 @@ def _select_network(netname):
         # TODO: refit SWAP and MEAN for places205? These work for now.
         NET_FN = "deploy_places205.protxt"  # Make sure force_backward: true
         PARAM_FN = "googlelet_places205_train_iter_2400000.caffemodel"
-        CHANNEL_SWAP = (2, 1, 0) 
+        CHANNEL_SWAP = (2, 1, 0)
         # ImageNet mean, training set dependent
         CAFFE_MEAN = np.float32([104.0, 116.0, 122.0])
         return NET_FN, PARAM_FN, CHANNEL_SWAP, CAFFE_MEAN
@@ -104,8 +104,9 @@ def _deepdream(
     return _deprocess(net, src.data[0])
 
 
-def list_layers():
+def list_layers(network="bvlc_googlenet"):
     # Load DNN model
+    NET_FN, PARAM_FN, CHANNEL_SWAP, CAFFE_MEAN = _select_network(network)
     net = Classifier(
         NET_FN, PARAM_FN, mean=CAFFE_MEAN, channel_swap=CHANNEL_SWAP)
     net.blobs.keys()
@@ -118,7 +119,7 @@ def deepdream(
     img = np.float32(img_open(img_path))
     s = scale_coefficient
     h, w = img.shape[:2]
-    
+
     # Select, load DNN model
     NET_FN, PARAM_FN, CHANNEL_SWAP, CAFFE_MEAN = _select_network(network)
     net = Classifier(

@@ -46,7 +46,7 @@ def main():
             "--list-layers", action="store_true", help="list layers")
         args = parser.parse_args()
         if args.list_layers:
-            list_layers()
+            list_layers(network=args.network)
         else:
             zoom = True
             if args.zoom == "false":
