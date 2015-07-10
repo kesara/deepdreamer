@@ -24,8 +24,11 @@ Easy to configure Python program that make use of [Google's DeepDream](https://g
 usage: deepdreamer.py [-h] [--zoom {true,false}] [--scale SCALE]
                       [--dreams DREAMS] [--itern ITERN] [--octaves OCTAVES]
                       [--octave-scale OCTAVE_SCALE] [--layers LAYERS]
-                      [--clip {true,false}] [--list-layers]
-                      [--network {bvlc_googlenet, googlenet_place205}]
+                      [--clip {true,false}]
+                      [--network {bvlc_googlenet,googlenet_place205}]
+                      [--gif {true,false}] [--reverse {true,false}]
+                      [--duration DURATION] [--loop {true,false}]
+                      [--list-layers]
                       [image]
 
 positional arguments:
@@ -42,6 +45,12 @@ optional arguments:
                         dream octave scale (default: 1.4)
   --layers LAYERS       dream layers (default: inception_4c/output)
   --clip {true,false}   clip dreams (default: true)
+  --network {bvlc_googlenet,googlenet_place205}
+                        choose the network to use (default: bvlc_googlenet)
+  --gif {true,false}    make a gif (default: false)
+  --reverse {true,false}
+                        make a reverse gif (default: false)
+  --duration DURATION   gif frame duration in seconds (default: 0.1)
+  --loop {true,false}   enable gif loop (default: false)
   --list-layers         list layers
-  --network             choose the network to use (default: googlenet_place205)
 ```
