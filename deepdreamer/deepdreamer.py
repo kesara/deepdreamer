@@ -6,6 +6,7 @@
 
 import numpy as np
 from caffe import Classifier
+from images2gif import writeGif
 from scipy.ndimage import affine_transform, zoom
 from PIL.Image import fromarray as img_fromarray, open as img_open
 
@@ -22,7 +23,7 @@ def _select_network(netname):
         # TODO: refit SWAP and MEAN for places205? These work for now.
         NET_FN = "deploy_places205.protxt"  # Make sure force_backward: true
         PARAM_FN = "googlelet_places205_train_iter_2400000.caffemodel"
-        CHANNEL_SWAP = (2, 1, 0) 
+        CHANNEL_SWAP = (2, 1, 0)
         # ImageNet mean, training set dependent
         CAFFE_MEAN = np.float32([104.0, 116.0, 122.0])
         return NET_FN, PARAM_FN, CHANNEL_SWAP, CAFFE_MEAN
@@ -104,8 +105,9 @@ def _deepdream(
     return _deprocess(net, src.data[0])
 
 
-def list_layers():
+def list_layers(network="bvlc_googlenet"):
     # Load DNN model
+    NET_FN, PARAM_FN, CHANNEL_SWAP, CAFFE_MEAN = _select_network(network)
     net = Classifier(
         NET_FN, PARAM_FN, mean=CAFFE_MEAN, channel_swap=CHANNEL_SWAP)
     net.blobs.keys()
@@ -114,15 +116,18 @@ def list_layers():
 def deepdream(
         img_path, zoom=True, scale_coefficient=0.05, irange=100, iter_n=10,
         octave_n=4, octave_scale=1.4, end="inception_4c/output", clip=True,
-        network="bvlc_googlenet"):
+        network="bvlc_googlenet", gif=False, reverse=False, duration=0.1,
+        loop=False):
     img = np.float32(img_open(img_path))
     s = scale_coefficient
     h, w = img.shape[:2]
-    
+
     # Select, load DNN model
     NET_FN, PARAM_FN, CHANNEL_SWAP, CAFFE_MEAN = _select_network(network)
     net = Classifier(
         NET_FN, PARAM_FN, mean=CAFFE_MEAN, channel_swap=CHANNEL_SWAP)
+
+    img_pool = [img_path,]
 
     print("Dreaming...")
     for i in xrange(irange):
@@ -131,7 +136,20 @@ def deepdream(
             octave_scale=octave_scale, end=end, clip=clip)
         img_fromarray(np.uint8(img)).save("{}_{}.jpg".format(
             img_path, i))
+        if gif:
+            img_pool.append("{}_{}.jpg".format(img_path, i))
         print("Dream {} saved.".format(i))
         if zoom:
             img = affine_transform(
                 img, [1-s, 1-s, 1], [h*s/2, w*s/2, 0], order=1)
+    if gif:
+        print("Creating gif...")
+        frames = None
+        if reverse:
+            frames = [img_open(f) for f in img_pool[::-1]]
+        else:
+            frames = [img_open(f) for f in img_pool]
+        writeGif(
+            "{}.gif".format(img_path), frames, duration=duration,
+            repeat=loop)
+        print("gif created.")
