@@ -55,7 +55,9 @@ docs/_build/
 
 # PyBuilder
 target/
-/bvlc_googlenet.caffemodel
-/deploy.prototxt
-/deploy_places205.protxt
-/googlelet_places205_train_iter_2400000.caffemodel
+*.caffemodel
+*.prototxt
+*.protxt
+log.txt
+*.jpg
+*.jpeg

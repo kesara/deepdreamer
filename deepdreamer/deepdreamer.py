@@ -9,6 +9,10 @@ from caffe import Classifier
 from images2gif import writeGif
 from scipy.ndimage import affine_transform, zoom
 from PIL.Image import fromarray as img_fromarray, open as img_open
+import logging
+
+logging.basicConfig(filename='log.txt', format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p',
+                    level=logging.NOTSET)
 
 
 def _select_network(netname):
@@ -128,6 +132,12 @@ def deepdream(
         NET_FN, PARAM_FN, mean=CAFFE_MEAN, channel_swap=CHANNEL_SWAP)
 
     img_pool = [img_path,]
+
+    # Save settings used in a log file
+    logging.info("{} zoom={}, scale_coefficient={}, irange={}, iter_n={}, octave_n={}, octave_scale={}, end={},"\
+            "clip={}, network={}, gif={}, reverse={}, duration={}, loop={}".format(
+        img_path, zoom, scale_coefficient, irange, iter_n, octave_n, octave_scale, end, clip, network, gif, reverse,
+        duration, loop))
 
     print("Dreaming...")
     for i in xrange(irange):
