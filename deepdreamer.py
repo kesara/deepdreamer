@@ -6,7 +6,7 @@
 from argparse import ArgumentParser
 import sys
 
-from deepdreamer.deepdreamer import deepdream, list_layers
+from deepdreamer.deepdreamer import deepdream, deepdream_video, list_layers
 
 
 def main():
@@ -52,13 +52,26 @@ def main():
         parser.add_argument(
             "--loop", choices=["true", "false"], default="false",
             help="enable gif loop (default: false)")
+        parser.add_argument(
+            "--framerate", type=int, default=24,
+            help="framerate for video (default: 24)")
         group = parser.add_mutually_exclusive_group(required=True)
         group.add_argument("image", nargs="?")
         group.add_argument(
             "--list-layers", action="store_true", help="list layers")
+        group.add_argument(
+            "--video", type=str, help="video file")
         args = parser.parse_args()
         if args.list_layers:
             list_layers(network=args.network)
+        elif args.video:
+            clip = True
+            if args.clip == "false":
+                clip = False
+            deepdream_video(
+                args.video, iter_n=args.itern, octave_n=args.octaves,
+                octave_scale=args.octave_scale, end=args.layers, clip=clip,
+                network=args.network, frame_rate=args.framerate)
         else:
             zoom = True
             if args.zoom == "false":

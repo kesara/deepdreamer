@@ -4,6 +4,9 @@
 # Author: Kesara Rathnayake ( kesara [at] kesara [dot] lk )
 ###############################################################################
 
+from os import mkdir, listdir
+from subprocess import Popen
+
 import numpy as np
 from caffe import Classifier
 from images2gif import writeGif
@@ -11,8 +14,11 @@ from scipy.ndimage import affine_transform, zoom
 from PIL.Image import fromarray as img_fromarray, open as img_open
 import logging
 
-logging.basicConfig(filename='log.txt', format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p',
-                    level=logging.NOTSET)
+logging.basicConfig(
+    filename='log.txt',
+    format='%(asctime)s %(message)s',
+    datefmt='%m/%d/%Y %I:%M:%S %p',
+    level=logging.NOTSET)
 
 
 def _select_network(netname):
@@ -109,6 +115,25 @@ def _deepdream(
     return _deprocess(net, src.data[0])
 
 
+def _output_video_dir(video):
+    return "{}_images".format(video)
+
+
+def _extract_video(video):
+    output_dir = _output_video_dir(video)
+    mkdir(output_dir)
+    Popen("ffmpeg -i {} -f image2 {}/img_%4d.jpg".format(
+        video, output_dir), shell=True)
+
+
+def _create_video(video, frame_rate=24):
+    output_dir = _output_video_dir(video)
+    Popen((
+        "ffmpeg -r {} -f image2 -pattern_type glob -i \"{}/img_*.jpg\" "
+        "{}.mp4").format(
+            frame_rate, output_dir, video), shell=True)
+
+
 def list_layers(network="bvlc_googlenet"):
     # Load DNN model
     NET_FN, PARAM_FN, CHANNEL_SWAP, CAFFE_MEAN = _select_network(network)
@@ -131,13 +156,15 @@ def deepdream(
     net = Classifier(
         NET_FN, PARAM_FN, mean=CAFFE_MEAN, channel_swap=CHANNEL_SWAP)
 
-    img_pool = [img_path,]
+    img_pool = [img_path]
 
     # Save settings used in a log file
-    logging.info("{} zoom={}, scale_coefficient={}, irange={}, iter_n={}, octave_n={}, octave_scale={}, end={},"\
-            "clip={}, network={}, gif={}, reverse={}, duration={}, loop={}".format(
-        img_path, zoom, scale_coefficient, irange, iter_n, octave_n, octave_scale, end, clip, network, gif, reverse,
-        duration, loop))
+    logging.info((
+        "{} zoom={}, scale_coefficient={}, irange={}, iter_n={}, "
+        "octave_n={}, octave_scale={}, end={}, clip={}, network={}, gif={}, "
+        "reverse={}, duration={}, loop={}").format(
+            img_path, zoom, scale_coefficient, irange, iter_n, octave_n,
+            octave_scale, end, clip, network, gif, reverse, duration, loop))
 
     print("Dreaming...")
     for i in xrange(irange):
@@ -163,3 +190,32 @@ def deepdream(
             "{}.gif".format(img_path), frames, duration=duration,
             repeat=loop)
         print("gif created.")
+
+
+def deepdream_video(
+        video, iter_n=10, octave_n=4, octave_scale=1.4,
+        end="inception_4c/output", clip=True, network="bvlc_googlenet",
+        frame_rate=24):
+
+    # Select, load DNN model
+    NET_FN, PARAM_FN, CHANNEL_SWAP, CAFFE_MEAN = _select_network(network)
+    net = Classifier(
+        NET_FN, PARAM_FN, mean=CAFFE_MEAN, channel_swap=CHANNEL_SWAP)
+
+    print("Extracting video...")
+    _extract_video(video)
+
+    output_dir = _output_video_dir(video)
+    images = listdir(output_dir)
+
+    print("Dreaming...")
+    for imgage in images:
+        img = np.float32(img_open(imgage))
+        img = _deepdream(
+            net, img, iter_n=iter_n, octave_n=octave_n,
+            octave_scale=octave_scale, end=end, clip=clip)
+        img_fromarray(np.uint8(img)).save(image)
+
+    print("Creating dream video...")
+    _create_video(video, frame_rate)
+    print("Dream video created.")
