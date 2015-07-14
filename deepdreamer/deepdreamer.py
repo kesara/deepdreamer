@@ -5,7 +5,7 @@
 ###############################################################################
 
 from os import mkdir, listdir
-from subprocess import Popen
+from subprocess import PIPE, Popen
 
 import numpy as np
 from caffe import Classifier
@@ -122,16 +122,18 @@ def _output_video_dir(video):
 def _extract_video(video):
     output_dir = _output_video_dir(video)
     mkdir(output_dir)
-    Popen("ffmpeg -i {} -f image2 {}/img_%4d.jpg".format(
-        video, output_dir), shell=True)
+    output = Popen(
+        "ffmpeg -loglevel quiet -i {} -f image2 {}/img_%4d.jpg".format(
+            video, output_dir), shell=True, stdout=PIPE).stdout.read()
 
 
 def _create_video(video, frame_rate=24):
     output_dir = _output_video_dir(video)
-    Popen((
-        "ffmpeg -r {} -f image2 -pattern_type glob -i \"{}/img_*.jpg\" "
-        "{}.mp4").format(
-            frame_rate, output_dir, video), shell=True)
+    output = Popen((
+        "ffmpeg -loglevel quiet -r {} -f image2 -pattern_type glob "
+        "-i \"{}/img_*.jpg\" {}.mp4").format(
+            frame_rate, output_dir, video),
+        shell=True, stdout=PIPE).stdout.read()
 
 
 def list_layers(network="bvlc_googlenet"):
@@ -209,8 +211,9 @@ def deepdream_video(
     images = listdir(output_dir)
 
     print("Dreaming...")
-    for imgage in images:
-        img = np.float32(img_open(imgage))
+    for image in images:
+        image = "{}/{}".format(output_dir, image)
+        img = np.float32(img_open(image))
         img = _deepdream(
             net, img, iter_n=iter_n, octave_n=octave_n,
             octave_scale=octave_scale, end=end, clip=clip)
