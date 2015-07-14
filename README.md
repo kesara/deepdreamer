@@ -7,6 +7,7 @@ Easy to configure Python program that make use of [Google's DeepDream](https://g
 * [SciPy](https://pypi.python.org/pypi/scipy/)
 * [Pillow](https://pypi.python.org/pypi/Pillow/)
 * [Caffe](http://caffe.berkeleyvision.org/)
+* [FFmpeg](https://www.ffmpeg.org/) (Optional, required for videos.)
 
 ## Installation
 1. Install [NumPy](https://pypi.python.org/pypi/numpy), [SciPy](https://pypi.python.org/pypi/scipy/), [Pillow](https://pypi.python.org/pypi/Pillow/) and [Caffe](http://caffe.berkeleyvision.org/). *NumPy, SciPy & Pillow can be installed via PIP.*
@@ -17,9 +18,14 @@ Easy to configure Python program that make use of [Google's DeepDream](https://g
 6. Make sure the files are in the root directory of DeepDreamer.
 
 ## Usage
+* Just deep dreaming
 `python deepdreamer.py image.jpg`
+* Create a deepdream gif
+`python deepdreamer.py --gif true image.jpg`
+* Create a deepdream video (requires ffmpeg)
+`python deepdreamer.py --video video.mp4`
 
-### Configuration options
+## Configuration options
 ```
 usage: deepdreamer.py [-h] [--zoom {true,false}] [--scale SCALE]
                       [--dreams DREAMS] [--itern ITERN] [--octaves OCTAVES]
@@ -28,7 +34,7 @@ usage: deepdreamer.py [-h] [--zoom {true,false}] [--scale SCALE]
                       [--network {bvlc_googlenet,googlenet_place205}]
                       [--gif {true,false}] [--reverse {true,false}]
                       [--duration DURATION] [--loop {true,false}]
-                      [--list-layers]
+                      [--framerate FRAMERATE] [--list-layers] [--video VIDEO]
                       [image]
 
 positional arguments:
@@ -52,5 +58,8 @@ optional arguments:
                         make a reverse gif (default: false)
   --duration DURATION   gif frame duration in seconds (default: 0.1)
   --loop {true,false}   enable gif loop (default: false)
+  --framerate FRAMERATE
+                        framerate for video (default: 24)
   --list-layers         list layers
+  --video VIDEO         video file
 ```
