@@ -55,6 +55,9 @@ def main():
         parser.add_argument(
             "--framerate", type=int, default=24,
             help="framerate for video (default: 24)")
+        parser.add_argument(
+            "--gpuid", type=int, default=-1,
+            help="enable GPU with id GPUID (default: disabled)")
         group = parser.add_mutually_exclusive_group(required=True)
         group.add_argument("image", nargs="?")
         group.add_argument(
@@ -88,12 +91,15 @@ def main():
             loop = False
             if args.loop == "true":
                 loop = True
+            gpu = False
+            if args.gpuid >= 0:
+                gpu = True
             deepdream(
                 args.image, zoom=zoom, scale_coefficient=args.scale,
                 irange=args.dreams, iter_n=args.itern, octave_n=args.octaves,
                 octave_scale=args.octave_scale, end=args.layers, clip=clip,
                 network=args.network, gif=gif, reverse=reverse,
-                duration=args.duration, loop=loop)
+                duration=args.duration, loop=loop, gpu=gpu, gpuid=args.gpuid)
     except Exception as e:
         print("Error: {}".format(e))
         sys.exit(2)

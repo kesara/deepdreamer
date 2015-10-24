@@ -8,7 +8,7 @@ from os import mkdir, listdir
 from subprocess import PIPE, Popen
 
 import numpy as np
-from caffe import Classifier
+import caffe
 from images2gif import writeGif
 from scipy.ndimage import affine_transform, zoom
 from PIL.Image import fromarray as img_fromarray, open as img_open
@@ -139,7 +139,7 @@ def _create_video(video, frame_rate=24):
 def list_layers(network="bvlc_googlenet"):
     # Load DNN model
     NET_FN, PARAM_FN, CHANNEL_SWAP, CAFFE_MEAN = _select_network(network)
-    net = Classifier(
+    net = caffe.Classifier(
         NET_FN, PARAM_FN, mean=CAFFE_MEAN, channel_swap=CHANNEL_SWAP)
     net.blobs.keys()
 
@@ -148,14 +148,19 @@ def deepdream(
         img_path, zoom=True, scale_coefficient=0.05, irange=100, iter_n=10,
         octave_n=4, octave_scale=1.4, end="inception_4c/output", clip=True,
         network="bvlc_googlenet", gif=False, reverse=False, duration=0.1,
-        loop=False):
+        loop=False, gpu=False, gpuid=0):
     img = np.float32(img_open(img_path))
     s = scale_coefficient
     h, w = img.shape[:2]
 
+    if gpu:
+        print("Enabling GPU {}...".format(gpuid))
+        caffe.set_device(gpuid)
+        caffe.set_mode_gpu()
+
     # Select, load DNN model
     NET_FN, PARAM_FN, CHANNEL_SWAP, CAFFE_MEAN = _select_network(network)
-    net = Classifier(
+    net = caffe.Classifier(
         NET_FN, PARAM_FN, mean=CAFFE_MEAN, channel_swap=CHANNEL_SWAP)
 
     img_pool = [img_path]
@@ -201,7 +206,7 @@ def deepdream_video(
 
     # Select, load DNN model
     NET_FN, PARAM_FN, CHANNEL_SWAP, CAFFE_MEAN = _select_network(network)
-    net = Classifier(
+    net = caffe.Classifier(
         NET_FN, PARAM_FN, mean=CAFFE_MEAN, channel_swap=CHANNEL_SWAP)
 
     print("Extracting video...")

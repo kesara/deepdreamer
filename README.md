@@ -30,7 +30,7 @@ Easy to configure Python program that make use of [Google's DeepDream](https://g
 usage: deepdreamer.py [-h] [--zoom {true,false}] [--scale SCALE]
                       [--dreams DREAMS] [--itern ITERN] [--octaves OCTAVES]
                       [--octave-scale OCTAVE_SCALE] [--layers LAYERS]
-                      [--clip {true,false}]
+                      [--clip {true,false}] [--gpuid GPUID]
                       [--network {bvlc_googlenet,googlenet_place205}]
                       [--gif {true,false}] [--reverse {true,false}]
                       [--duration DURATION] [--loop {true,false}]
@@ -42,6 +42,7 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
+  --gpuid GPUID         enable GPU with id GPUID (default: disabled)
   --zoom {true,false}   zoom dreams (default: true)
   --scale SCALE         scale coefficient for zoom (default: 0.05)
   --dreams DREAMS       number of images (default: 100)
