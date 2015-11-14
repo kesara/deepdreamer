@@ -8,7 +8,7 @@ from os import mkdir, listdir
 from subprocess import PIPE, Popen
 
 import numpy as np
-from caffe import Classifier
+from caffe import Classifier, set_device, set_mode_gpu
 from images2gif import writeGif
 from scipy.ndimage import affine_transform, zoom
 from PIL.Image import fromarray as img_fromarray, open as img_open
@@ -148,10 +148,15 @@ def deepdream(
         img_path, zoom=True, scale_coefficient=0.05, irange=100, iter_n=10,
         octave_n=4, octave_scale=1.4, end="inception_4c/output", clip=True,
         network="bvlc_googlenet", gif=False, reverse=False, duration=0.1,
-        loop=False):
+        loop=False, gpu=False, gpuid=0):
     img = np.float32(img_open(img_path))
     s = scale_coefficient
     h, w = img.shape[:2]
+
+    if gpu:
+        print("Enabling GPU {}...".format(gpuid))
+        set_device(gpuid)
+        set_mode_gpu()
 
     # Select, load DNN model
     NET_FN, PARAM_FN, CHANNEL_SWAP, CAFFE_MEAN = _select_network(network)
