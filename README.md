@@ -75,7 +75,7 @@ optional arguments:
 Original Image|Deepdream
 --------|---------
 ![Original](https://farm8.staticflickr.com/7233/7167040599_cf7c835c77_z_d.jpg)|![Deepdream](http://i.imgur.com/Auikelk.jpg)
-From complete black (#000000)|![Deepdream](http://i.imgur.com/Ox1B8wf.gif)
-From complete black (#000000)|![Deepdream](http://i.imgur.com/llUZ7Ll.gif)
+From completely black (#000000) image|![Deepdream](http://i.imgur.com/Ox1B8wf.gif)
+From completely white (#ffffff) image|![Deepdream](http://i.imgur.com/llUZ7Ll.gif)
 ![Original](https://farm9.staticflickr.com/8084/8361122341_183dd4a7e3_z_d.jpg)|![Deepdream](http://i.imgur.com/1YpPJVK.jpg)
 ![Original](https://farm8.staticflickr.com/7016/6736252139_e979e45b8c_z_d.jpg)|![Deepdream](http://i.imgur.com/E8cO7zk.jpg)
