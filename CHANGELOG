@@ -1,5 +1,8 @@
 Changelog
 =========
+v0.0.2a, 04/11/2017
+* Changed the script to use Python 3.
+* Works with Caffe  1.0.0.
 
 v0.0.1a, historical entry
 * Initial release in 2015.

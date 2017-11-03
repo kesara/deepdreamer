@@ -9,7 +9,7 @@ from subprocess import PIPE, Popen
 
 import numpy as np
 from caffe import Classifier, set_device, set_mode_gpu
-from images2gif import writeGif
+from deepdreamer.images2gif import writeGif
 from scipy.ndimage import affine_transform, zoom
 from PIL.Image import fromarray as img_fromarray, open as img_open
 import logging
@@ -81,7 +81,7 @@ def _deepdream(
     # prepare base images for all octaves
     octaves = [_preprocess(net, base_img)]
 
-    for i in xrange(octave_n-1):
+    for i in range(octave_n-1):
         octaves.append(zoom(
             octaves[-1], (1, 1.0/octave_scale, 1.0/octave_scale), order=1))
 
@@ -100,7 +100,7 @@ def _deepdream(
         src.reshape(1, 3, h, w)  # resize the network's input image size
         src.data[0] = octave_base+detail
 
-        for i in xrange(iter_n):
+        for i in range(iter_n):
             _make_step(net, end=end, clip=clip, **step_params)
 
             # visualization
@@ -174,7 +174,7 @@ def deepdream(
             octave_scale, end, clip, network, gif, reverse, duration, loop))
 
     print("Dreaming...")
-    for i in xrange(irange):
+    for i in range(irange):
         img = _deepdream(
             net, img, iter_n=iter_n, octave_n=octave_n,
             octave_scale=octave_scale, end=end, clip=clip)
