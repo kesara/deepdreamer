@@ -1,4 +1,4 @@
-# Deep Dreamer
+# [Deep Dreamer](https://deepdreamer.fq.nz/)
 Easy to configure Python program that make use of [Google's DeepDream](https://github.com/google/deepdream/)
 
 * [Requirements](#requirements)
