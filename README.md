@@ -1,4 +1,4 @@
-# Deep Dreamer
+# [Deep Dreamer](https://deepdreamer.fq.nz/)
 Easy to configure Python program that make use of [Google's DeepDream](https://github.com/google/deepdream/)
 
 * [Requirements](#requirements)
@@ -8,7 +8,7 @@ Easy to configure Python program that make use of [Google's DeepDream](https://g
 * [Examples](#examples)
 
 ## Requirements
-* Python 2.7
+* Python 3
 * [NumPy](https://pypi.python.org/pypi/numpy)
 * [SciPy](https://pypi.python.org/pypi/scipy/)
 * [Pillow](https://pypi.python.org/pypi/Pillow/)
@@ -16,7 +16,7 @@ Easy to configure Python program that make use of [Google's DeepDream](https://g
 * [FFmpeg](https://www.ffmpeg.org/) (Optional, required for videos.)
 
 ## Installation
-1. Install [NumPy](https://pypi.python.org/pypi/numpy), [SciPy](https://pypi.python.org/pypi/scipy/), [Pillow](https://pypi.python.org/pypi/Pillow/) and [Caffe](http://caffe.berkeleyvision.org/). *NumPy, SciPy & Pillow can be installed via PIP.*
+1. Install [NumPy](https://pypi.python.org/pypi/numpy), [SciPy](https://pypi.python.org/pypi/scipy/), [Pillow](https://pypi.python.org/pypi/Pillow/) and [Caffe](http://caffe.berkeleyvision.org/). *On Ubuntu 17.10 installing caffe will usually install all other dependencies.*
 2. Download **deploy.prototxt** from [bvlc_googlenet](https://github.com/BVLC/caffe/tree/master/models/bvlc_googlenet).
 3. Add line `force_backward: true` to **deploy.prototxt** file.
 4. Download **bvlc_googlenet.caffemodel** from [bvlc_googlenet](https://github.com/BVLC/caffe/tree/master/models/bvlc_googlenet).
@@ -25,11 +25,11 @@ Easy to configure Python program that make use of [Google's DeepDream](https://g
 
 ## Usage
 * Just deep dreaming
-`python deepdreamer.py image.jpg`
+`python3 deepdreamer.py image.jpg`
 * Create a deepdream gif
-`python deepdreamer.py --gif true image.jpg`
+`python3 deepdreamer.py --gif true image.jpg`
 * Create a deepdream video (requires ffmpeg)
-`python deepdreamer.py --video video.mp4`
+`python3 deepdreamer.py --video video.mp4`
 
 ## Configuration options
 ```
@@ -72,10 +72,7 @@ optional arguments:
 ```
 
 ## Examples
-Original Image|Deepdream
---------|---------
-![Original](https://farm8.staticflickr.com/7233/7167040599_cf7c835c77_z_d.jpg)|![Deepdream](http://i.imgur.com/Auikelk.jpg)
-From completely black (#000000) image|![Deepdream](http://i.imgur.com/Ox1B8wf.gif)
-From completely white (#ffffff) image|![Deepdream](http://i.imgur.com/llUZ7Ll.gif)
-![Original](https://farm9.staticflickr.com/8084/8361122341_183dd4a7e3_z_d.jpg)|![Deepdream](http://i.imgur.com/1YpPJVK.jpg)
-![Original](https://farm8.staticflickr.com/7016/6736252139_e979e45b8c_z_d.jpg)|![Deepdream](http://i.imgur.com/E8cO7zk.jpg)
+![Deepdream](https://i.imgur.com/Auikelk.jpg)
+![Deepdream](https://i.imgur.com/Ox1B8wf.gif)
+![Deepdream](https://i.imgur.com/llUZ7Ll.gif)
+![Deepdream](https://i.imgur.com/41GVLNC.gif)
